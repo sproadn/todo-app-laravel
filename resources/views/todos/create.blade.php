@@ -6,34 +6,28 @@ Create Todo
 
 @section('content')
 
-<form action="{{ route('store_todo') }}" method="post" class="mt-4 p-4">
+<form action="{{!empty($todo) ? route('update_todo') : route('store_todo') }}" method="post" class="mt-4 p-4">
     @csrf()
     <div class="form-group m-3">
         <label for="name">Todo Name</label>
-        <input type="text" class="form-control" name="title">
+        <input type="text" class="form-control" name="title" value="{{ !empty($todo) ? $todo->title : '' }}" @if(!empty($todo)) disabled @endif>
     </div>
     <div class="form-group m-3">
         <label for="description">Todo Description</label>
-        <textarea class="form-control" name="description" rows="3"></textarea>
+        <textarea class="form-control" name="description" rows="3">{{ !empty($todo) ? $todo->description : '' }}</textarea>
     </div>
     <div class="form-group m-3">
         <label for="description">Todo Date</label>
-        <input type="date" name="todo_date" class="form-control">
+        <input type="date" name="todo_date" class="form-control" value="{{ !empty($todo) ? date('Y-m-d', strtotime($todo->todo_date)) : '' }}">
     </div>
+    @if(!empty($todo))
+    <div class="form-group m-3">
+        <input type="hidden" name="id" value="{{ $todo->id }}">
+    </div>
+    @endif
     <div class="form-group m-3">
         <input type="submit" class="btn btn-primary float-end" value="Submit">
     </div>
 </form>
-
-<ul>
-    @foreach ($allTodos as $todo)
-        <ul>
-            <li>Titre: {{ $todo->title }}</li>
-            <li>Description: {{ $todo->description }}</li>
-            <li>Date {{ date('d/m/Y', strtotime($todo->todo_date)) }}</li>
-        </ul>
-        <br>
-    @endforeach
-</ul>
 
 @endsection

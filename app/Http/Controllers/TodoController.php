@@ -24,7 +24,6 @@ class TodoController extends Controller
 
     public function store (Request $request){
         //dd($request->method());
-        User::where();
         if ($request->method() === "POST"){
             $datas = $request->all();
             Todo::create([
@@ -53,12 +52,43 @@ class TodoController extends Controller
         }
     }
 
-    public function update(Request $request, $id){
+    public function edit($id){
         $todo = Todo::find($id);
         if ($todo){
-            $todo->update([
-                'descritption' => $request->description
-            ]);
+            return view('todos.create', ['todo' => $todo]);
         }
+    }
+
+    public function update(Request $request){
+        $todo = Todo::find($request->id);
+        if ($todo){
+            
+            $todo->update([
+                'description' => $request->description,
+                'todo_date' => $request->todo_date
+            ]);
+            return redirect()->route('todo_index');
+        }
+        return redirect()->back();
+    }
+
+    public function delete($id){
+        $todo = Todo::find($id);
+        if ($todo) {
+            $todo->delete();
+            return redirect()->route('todo_index');
+        }
+        return redirect()->back();
+    }
+
+    public function changeStatus ($id){
+        $todo = Todo::find($id);
+        if ($todo) {
+            $todo->update([
+                'completed' => !$todo->completed
+            ]);
+            return redirect()->route('todo_index');
+        }
+        return redirect()->back();
     }
 }

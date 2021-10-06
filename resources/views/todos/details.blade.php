@@ -14,8 +14,8 @@ Details
         <h5 class="card-title">{{ $todo->title }}</h5>
         <p class="card-text">Description: {{ $todo->description }}</p>
         <p class="card-text">Todo date: {{ date('d/m/Y', strtotime($todo->todo_date)) }}</p>
-        <a href="edit"><span class="btn btn-primary">Edit</span></a>
-        <a href="delete"><span class="btn btn-danger">Delete</span></a>
+        <a href="{{ route('edit_todo', ['id' => $todo->id]) }}"><span class="btn btn-primary">Edit</span></a>
+        <a href="{{ route('delete_todo', ['id' => $todo->id]) }}"><span class="btn btn-danger">Delete</span></a>
     </div>
 </div>
 
