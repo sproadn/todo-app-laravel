@@ -24,6 +24,7 @@ class TodoController extends Controller
 
     public function store (Request $request){
         //dd($request->method());
+        
         if ($request->method() === "POST"){
             $datas = $request->all();
             Todo::create([
